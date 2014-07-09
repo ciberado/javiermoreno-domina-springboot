@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Jul 09 23:14:22 CEST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0147-1cfa-2861-000007a52488 
+on database directory memory:C:\temp\SpringBootModelo\testdb with class loader sun.misc.Launcher$AppClassLoader@5b2f9ee1 
+Loaded from file:/C:/Users/ciberado/.m2/repository/org/apache/derby/derby/10.10.2.0/derby-10.10.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_25-b16
+user.dir=C:\temp\SpringBootModelo
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
