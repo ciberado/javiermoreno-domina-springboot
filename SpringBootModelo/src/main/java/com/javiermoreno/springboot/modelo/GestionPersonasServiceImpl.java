@@ -6,6 +6,7 @@
 
 package com.javiermoreno.springboot.modelo;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,16 @@ public class GestionPersonasServiceImpl implements GestionPersonasService {
     public void registrarNuevaPersona(Persona persona) {
         em.persist(persona);
     }
-            
+
+    @Override
+    public List<Persona> findByIdDocument(String doc) {
+        List<Persona> resultado = em
+                .createQuery("select p from Persona as p where docIdentificacion = :doc")
+                .setParameter("doc", doc)
+                .getResultList();
+        return resultado;
+    }
+
+    
+    
 }
