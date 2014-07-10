@@ -7,8 +7,8 @@ package com.javiermoreno.springboot.rest;
 
 import com.javiermoreno.springboot.modelo.GestionPersonasService;
 import com.javiermoreno.springboot.modelo.Persona;
-import com.javiermoreno.springboot.modelo.PersonaRepository;
 import java.util.concurrent.TimeUnit;
+import org.springframework.boot.actuate.system.ApplicationPidListener;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
@@ -47,8 +47,10 @@ public class App {
         ConfigurableApplicationContext context = 
             new SpringApplicationBuilder()
                 .showBanner(true)
-                .sources(App.class)
+                .sources(App.class)                   
                 .run(args);
+        context.addApplicationListener(new ApplicationPidListener());
+        
         GestionPersonasService service = context.getBean(GestionPersonasService.class);
         service.registrarNuevaPersona(new Persona("11111111A", "Alice", "Wonderland"));
     }
