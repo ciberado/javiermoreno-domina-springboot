@@ -29,7 +29,7 @@ public class PublicController {
     @RequestMapping("/test")
     @ResponseStatus(HttpStatus.OK)
     String[] demo() {
-        return new String[] {"ok, puedes acceder a la parte pública."};
+        return new String[] {"ooooooooook, puedes acceder a la parte pública."};
     }
     
     @RequestMapping("/seguro")
