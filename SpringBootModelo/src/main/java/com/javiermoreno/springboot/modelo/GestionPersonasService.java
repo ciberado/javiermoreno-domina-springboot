@@ -15,8 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
  */
 public interface GestionPersonasService {
 
+    
     Persona findById(int id);
 
+    //@PreAuthorize("isAnonymous()")
     void registrarNuevaPersona(Persona persona);
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
