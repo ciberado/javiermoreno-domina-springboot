@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Thu Jul 10 00:37:40 CEST 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0147-1d46-6d7c-0000162393e8 
-on database directory memory:C:\temp\SpringBootRest\testdb with class loader sun.misc.Launcher$AppClassLoader@5b2f9ee1 
+Mon Aug 04 17:07:13 CEST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0147-a18f-5d3f-00000718d098 
+on database directory memory:C:\Users\ciberado\Documents\GitHub\javiermoreno-domina-springboot\SpringBootRest\testdb with class loader sun.misc.Launcher$AppClassLoader@6c0081fb 
 Loaded from file:/C:/Users/ciberado/.m2/repository/org/apache/derby/derby/10.10.2.0/derby-10.10.2.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_25-b16
-user.dir=C:\temp\SpringBootRest
+user.dir=C:\Users\ciberado\Documents\GitHub\javiermoreno-domina-springboot\SpringBootRest
 os.name=Windows 7
 os.arch=amd64
 os.version=6.1
