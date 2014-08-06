@@ -11,6 +11,7 @@ Características completadas:
 * Autentificación por token (comprueba ip y ttl)
 * Ejemplos de publicación de ficheros estáticos
 * Ejemplos de autorización global a nivel de método de servicio
+* CORS implementado con spring
 * Integración con jpa/hibernate
 
 
