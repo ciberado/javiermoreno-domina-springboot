@@ -7,12 +7,17 @@ package com.javiermoreno.springboot.rest;
 
 import com.javiermoreno.springboot.modelo.GestionPersonasService;
 import com.javiermoreno.springboot.modelo.Persona;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
+import org.apache.catalina.connector.Connector;
+import org.apache.coyote.http11.Http11NioProtocol;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.system.ApplicationPidListener;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.ErrorPage;
+import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -32,7 +37,10 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 @ComponentScan(value = {"com.javiermoreno.springboot.rest", "com.javiermoreno.springboot.modelo"})
 @EntityScan(basePackages = "com.javiermoreno.springboot.modelo")
 public class App {
-
+    // @todo: Recupera el password de la keystore desde un lugar seguro.
+    @Value("${keystorePass}")
+    private String keystorePass;
+    
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
@@ -41,17 +49,38 @@ public class App {
         factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/errores/error404.html"),
                 new ErrorPage(HttpStatus.UNAUTHORIZED, "/errores/error401.html"),
                 new ErrorPage(HttpStatus.FORBIDDEN, "/errores/error403.html"));
+
+        // keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+        final String keystoreFilePath = "keystore.p12";
+        final String keystoreType = "PKCS12";
+        final String keystoreProvider = "SunJSSE";
+        final String keystoreAlias = "tomcat"; 
+
+        factory.addConnectorCustomizers((TomcatConnectorCustomizer) (Connector con) -> {
+            con.setScheme("https");
+            con.setSecure(true);
+            Http11NioProtocol proto = (Http11NioProtocol) con.getProtocolHandler();
+            proto.setSSLEnabled(true);
+            // @todo: Descarga el fichero con el certificado actual 
+            File keystoreFile = new File(keystoreFilePath);
+            proto.setKeystoreFile(keystoreFile.getAbsolutePath());
+            proto.setKeystorePass(keystorePass);
+            proto.setKeystoreType(keystoreType);
+            proto.setProperty("keystoreProvider", keystoreProvider);
+            proto.setKeyAlias(keystoreAlias);
+        });
+
         return factory;
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = 
-            new SpringApplicationBuilder()
+        ConfigurableApplicationContext context
+                = new SpringApplicationBuilder()
                 .showBanner(true)
-                .sources(App.class)                   
+                .sources(App.class)
                 .run(args);
         context.addApplicationListener(new ApplicationPidListener());
-        
+
         GestionPersonasService service = context.getBean(GestionPersonasService.class);
         service.registrarNuevaPersona(new Persona("11111111A", "Karl", "Marx"));
     }
