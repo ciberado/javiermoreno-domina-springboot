@@ -10,6 +10,12 @@ spring:
     url: jdbc:derby:memory:demodb;create=true
     username: root
     password: bragasdeesparto
+    
+#  datasource:
+#    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/proddb
+#    username: root
+#    password: bragasdeesparto
 
 spring:
     jpa:
@@ -17,11 +23,7 @@ spring:
             ddl-auto: create-drop
             naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         show-sql: true        
-#  datasource:
-#    driverClassName: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/proddb
-#    username: root
-#    password: bragasdeesparto
+
 
 application:    
     #Utilizado en RemoteApplicationProperties
