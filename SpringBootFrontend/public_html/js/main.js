@@ -3,7 +3,7 @@ $(document).ready(function() {
     var invocarTestPublico = function() {
         $.ajax({
             dataType: "json",
-            url: 'http://localhost:8000/public/test'
+            url: 'https://localhost:8000/public/test'
         }).done(function(data) {
             $('#respuesta').text('Público Ok: ' + JSON.stringify(data));
         }).fail(function(error) {
@@ -14,7 +14,7 @@ $(document).ready(function() {
     var invocarTestPrivado = function() {
         $.ajax({
             dataType: "json",
-            url: 'http://localhost:8000/private/test'
+            url: 'https://localhost:8000/private/test'
         }).done(function(data) {
             $('#respuesta').text('Privado Ok: ' + JSON.stringify(data));
         }).fail(function(error) {
@@ -26,7 +26,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: 'http://localhost:8000/private/test',
+            url: 'https://localhost:8000/private/test',
             headers: {
                 "Authorization": 'Basic ' + Base64.encode('admin' + ":" + 'adminadmin')
             }            
@@ -41,7 +41,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: 'http://localhost:8000/credentials/token',
+            url: 'https://localhost:8000/credentials/token',
             headers: {
                 "Authorization": 'Basic ' + Base64.encode('admin' + ":" + 'adminadmin')
             }            
@@ -57,7 +57,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: 'http://localhost:8000/private/test',
+            url: 'https://localhost:8000/private/test',
             headers: {
                 "X-Auth-Token": sessionStorage.getItem('X-Auth-Token')
             }            
