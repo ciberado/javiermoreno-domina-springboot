@@ -1,0 +1,24 @@
+#server.port=0 para que elija autom\u00e1ticamente un puerto libre
+server:
+  port: 8000
+  address: 127.0.0.1
+  contextPath: ""
+  
+spring:
+  datasource:
+    driverClassName: org.apache.derby.jdbc.EmbeddedDriver
+    url: jdbc:derby:memory:demodb;create=true
+    username: root
+    password: bragasdeesparto
+    
+#  datasource:
+#    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/proddb
+#    username: root
+#    password: bragasdeesparto
+
+#Password del keystore (esto tenemos que moverlo a un servicio externo)
+keystorePass: bragasdeesparto
+
+#Tiempo de vida del token de autentificación en segundos
+tokenTTL: 3600
