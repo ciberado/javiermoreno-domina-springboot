@@ -48,6 +48,13 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${sb.version}</version>
         </dependency>      
+        
+        <dependency>
+            <groupId>com.mangofactory</groupId>
+            <artifactId>swagger-springmvc</artifactId>
+            <version>0.8.5</version>
+        </dependency>
+                
         <dependency>
             <groupId>com.javiermoreno.springboot</groupId>
             <artifactId>SpringBootModelo</artifactId>

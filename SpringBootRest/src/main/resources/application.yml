@@ -31,4 +31,7 @@ application:
 
     #Tiempo de vida del token de autentificación en segundos 
     tokenTTL: 3600
+    
+    #Documentación de swagger
+    docs: http://localhost:8000
   

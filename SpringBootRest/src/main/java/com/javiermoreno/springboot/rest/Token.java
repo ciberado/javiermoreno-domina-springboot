@@ -4,19 +4,26 @@
  */
 package com.javiermoreno.springboot.rest;
 
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
  *
  * @author ciberado
  */
+//@TODO: Ver por qué no se integra corectamente @ApiModel en la swagger-doc
+@ApiModel("Security token")
 public class Token {
     private static final String TOKEN_PART_SEPARATOR = "#";
     
     // TODO: Investigar @Configurable para realizar el weaving de esta dependencia.
     private CryptographyService cryptoService;
+    @ApiModelProperty(value = "username del usuario", required = true)
     private String username;
+    @ApiModelProperty(value = "ip desde la que se realizó la petición de obtención de token", required = true)
     private String ip;
+    @ApiModelProperty(value = "tiempo en el que el token dejará de ser válido", required = true)
     private long expirationTime;
 
     public Token(CryptographyService cryptoService, String username, String ip, long ttlInSeconds) {

@@ -165,7 +165,7 @@ SwaggerApi.prototype.buildFromSpec = function(response) {
   }
   var isApi = false;
   var i;
-  for (i = 0; i < response.apis.length; i++) {
+  for (i = 0; response.apis && i < response.apis.length; i++) {
     var api = response.apis[i];
     if (api.operations) {
       var j;
@@ -190,7 +190,7 @@ SwaggerApi.prototype.buildFromSpec = function(response) {
     this.apisArray.push(res);
   } else {
     var k;
-    for (k = 0; k < response.apis.length; k++) {
+    for (k = 0; response.apis && k < response.apis.length; k++) {
       var resource = response.apis[k];
       res = new SwaggerResource(resource, this);
       this.apis[res.name] = res;
@@ -214,7 +214,7 @@ SwaggerApi.prototype.buildFrom1_1Spec = function(response) {
     this.info = response.info;
   }
   var isApi = false;
-  for (var i = 0; i < response.apis.length; i++) {
+  for (var i = 0; response.apis && i < response.apis.length; i++) {
     var api = response.apis[i];
     if (api.operations) {
       for (var j = 0; j < api.operations.length; j++) {
@@ -237,7 +237,7 @@ SwaggerApi.prototype.buildFrom1_1Spec = function(response) {
     this.apis[newName] = res;
     this.apisArray.push(res);
   } else {
-    for (k = 0; k < response.apis.length; k++) {
+    for (k = 0; response.apis && k < response.apis.length; k++) {
       resource = response.apis[k];
       res = new SwaggerResource(resource, this);
       this.apis[res.name] = res;
@@ -407,7 +407,7 @@ SwaggerResource.prototype.addApiDeclaration = function(response) {
 
   this.addModels(response.models);
   if (response.apis) {
-    for (var i = 0 ; i < response.apis.length; i++) {
+    for (var i = 0 ; response.apis && i < response.apis.length; i++) {
       var endpoint = response.apis[i];
       this.addOperations(endpoint.path, endpoint.operations, response.consumes, response.produces);
     }

@@ -7,6 +7,7 @@ package com.javiermoreno.springboot.rest;
 
 import com.javiermoreno.springboot.modelo.GestionPersonasService;
 import com.javiermoreno.springboot.modelo.Persona;
+import com.mangofactory.swagger.plugin.EnableSwagger;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 import org.apache.catalina.connector.Connector;
@@ -39,6 +40,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 @EnableWebMvcSecurity
 @ComponentScan(value = {"com.javiermoreno.springboot.rest", "com.javiermoreno.springboot.modelo"})
 @EntityScan(basePackages = "com.javiermoreno.springboot.modelo")
+@EnableSwagger
 public class App {
     @Autowired
     private RemoteApplicationProperties remoteProps; 

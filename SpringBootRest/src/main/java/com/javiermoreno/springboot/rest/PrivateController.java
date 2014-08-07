@@ -7,11 +7,14 @@ package com.javiermoreno.springboot.rest;
 
 import com.javiermoreno.springboot.modelo.GestionPersonasService;
 import com.javiermoreno.springboot.modelo.Persona;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,25 +24,28 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/private")
+@Api(value = "private", description = "Demo de recursos accesibles solo tras autentificar al usuario.")
 public class PrivateController {
 
     @Autowired
     private CounterService counterService;
-   
+
     @Autowired
     private GestionPersonasService service;
-    
-    @RequestMapping("/test")
+
+    @RequestMapping(value="test", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Obtener Ok", notes = "Permite comprobar el acceso al api privada.")
     String[] home() {
         counterService.increment("ctrl.private.invoked");
         return new String[]{"Ok, puedes acceder a la parte privada."};
     }
-   
-    @RequestMapping("/personas/{id}")
+
+    @RequestMapping(value="/personas/{id}", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "personas", notes = "Accede a un servicio que consultará la base de datos.")
     Persona getPersonaPorId(@PathVariable int id) {
         return service.findById(id);
     }
-    
+
 }

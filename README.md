@@ -13,6 +13,7 @@ Características completadas:
 * Ejemplos de autorización global a nivel de método de servicio
 * CORS implementado con spring
 * Integración con jpa/hibernate
+* Swagger REST API docs FTW!
 
 
 Características pendientes:

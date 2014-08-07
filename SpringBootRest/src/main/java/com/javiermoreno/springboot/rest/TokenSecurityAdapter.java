@@ -46,7 +46,7 @@ public class TokenSecurityAdapter extends WebSecurityConfigurerAdapter {
             // Filter order: http://docs.spring.io/spring-security/site/docs/3.2.0.RELEASE/apidocs/org/springframework/security/config/annotation/web/HttpSecurityBuilder.html#addFilter%28javax.servlet.Filter%29
             .addFilterAfter(authenticationTokenProcessingFilterBean(), BasicAuthenticationFilter.class)
             .authorizeRequests()                         
-                .antMatchers("/public/**", "/views/**", "/errores/**")
+                .antMatchers("/api-docs/**", "/public/**", "/views/**", "/errores/**")
                     .permitAll()
                 .antMatchers(HttpMethod.GET, "/private/**")
                     .hasRole("ADMIN")

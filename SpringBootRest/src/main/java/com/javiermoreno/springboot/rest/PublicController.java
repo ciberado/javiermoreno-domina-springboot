@@ -7,10 +7,13 @@ package com.javiermoreno.springboot.rest;
 
 import com.javiermoreno.springboot.modelo.GestionPersonasService;
 import com.javiermoreno.springboot.modelo.Persona;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,18 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/public")
+@Api(value = "public", description = "Demo de recursos accesibles públicamente sin autentificación.")
 public class PublicController {
-    
+
     @Autowired
     private GestionPersonasService service;
-    
-    @RequestMapping("/test")
+
+    @RequestMapping(value="/test", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "test", notes = "Permite comprobar el acceso al api publica.")
     String[] demo() {
-        return new String[] {"ooooooooook, puedes acceder a la parte pública."};
+        return new String[]{"ooooooooook, puedes acceder a la parte pública."};
     }
-    
-    @RequestMapping("/seguro")
+
+    @RequestMapping(value="/vip", method=RequestMethod.GET)
+    @ApiOperation(value = "vip", notes = "El servicio requiere autorización por lo que "
+            + "a pesar de superar el control http fallará si no se indican credenciales.")
     List<Persona> metodoSeguroPorPreautorizacion() {
         return service.findByIdDocument("11111111A");
     }

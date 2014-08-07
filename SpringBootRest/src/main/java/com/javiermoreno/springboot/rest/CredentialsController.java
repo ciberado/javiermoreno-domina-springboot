@@ -4,6 +4,8 @@
  */
 package com.javiermoreno.springboot.rest;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/credentials")
+@Api(value = "credentials", description = "Permite a un usuario autentificado obtener un token de identificación.")
 public class CredentialsController {
     @Value("${application.tokenTTL}")
     private int TOKEN_TTL;
@@ -28,6 +31,7 @@ public class CredentialsController {
     private CryptographyService cryptoService;
     
     @RequestMapping(value="/token", method = RequestMethod.GET)
+    @ApiOperation(value = "token", notes = "Retorna un token en Base64 con una duración marcada por TOKEN_TTL.")
     public Token createNewAuthToken(HttpServletRequest request) {
         long ttl = System.currentTimeMillis() + 1000 * TOKEN_TTL;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
