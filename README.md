@@ -15,6 +15,7 @@ Características completadas:
 * Integración con jpa/hibernate
 * Uso de @ConfigurationProperties para recuperar el password del certificado remotamente (simulado)
 * Mínima configuración mediante yaml
+* Métricas custom!
 
 
 Características pendientes:
