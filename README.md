@@ -1,4 +1,4 @@
-
+﻿
 Primer acercamiento a spring boot. Beber con cuidado.
 
 Características completadas:
@@ -14,6 +14,9 @@ Características completadas:
 * CORS implementado con spring
 * Integración con jpa/hibernate
 * Swagger REST API docs FTW!
+* Uso de @ConfigurationProperties para recuperar el password del certificado remotamente (simulado)
+* Mínima configuración mediante yaml
+* Métricas custom!
 
 
 Características pendientes:
@@ -21,6 +24,5 @@ Características pendientes:
 
 * Conectar con un servicio de configuración centralizado para inicializar la criptografía de token
 * Descargar el certificado actual desde una localización remota
-* Mover la password del certificado a un lugar seguro (quizá el servicio de configuración)
 * Mejorar los @autowired para facilitar test
 * Escribir los test!!!! (prioritario)
