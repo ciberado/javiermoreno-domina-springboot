@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/credentials")
 public class CredentialsController {
-    @Value("${tokenTTL}")
+    @Value("${application.tokenTTL}")
     private int TOKEN_TTL;
     
     @Autowired
