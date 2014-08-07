@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/private")
-@Api(value = "private", description = "Demo de recursos accesibles solo tras autentificar al usuario.")
+@Api(value = "Recursos privados", description = "Demo de recursos accesibles solo tras autentificar al usuario.")
 public class PrivateController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class PrivateController {
 
     @RequestMapping(value="test", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Obtener Ok", notes = "Permite comprobar el acceso al api privada.")
+    @ApiOperation(value = "Testear seguridad", notes = "Permite comprobar el acceso al api privada.")
     String[] home() {
         counterService.increment("ctrl.private.invoked");
         return new String[]{"Ok, puedes acceder a la parte privada."};
@@ -43,7 +43,7 @@ public class PrivateController {
 
     @RequestMapping(value="/personas/{id}", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "personas", notes = "Accede a un servicio que consultará la base de datos.")
+    @ApiOperation(value = "Testear servicios", notes = "Accede a un servicio que consultará la base de datos.")
     Persona getPersonaPorId(@PathVariable int id) {
         return service.findById(id);
     }

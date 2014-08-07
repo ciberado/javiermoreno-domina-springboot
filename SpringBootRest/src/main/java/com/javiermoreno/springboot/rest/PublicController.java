@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/public")
-@Api(value = "public", description = "Demo de recursos accesibles públicamente sin autentificación.")
+@Api(value = "Recursos públicos", description = "Demo de recursos accesibles públicamente sin autentificación.")
 public class PublicController {
 
     @Autowired
@@ -31,13 +31,13 @@ public class PublicController {
 
     @RequestMapping(value="/test", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "test", notes = "Permite comprobar el acceso al api publica.")
+    @ApiOperation(value = "Testear conectividad", notes = "Permite comprobar el acceso al api publica.")
     String[] demo() {
         return new String[]{"ooooooooook, puedes acceder a la parte pública."};
     }
 
     @RequestMapping(value="/vip", method=RequestMethod.GET)
-    @ApiOperation(value = "vip", notes = "El servicio requiere autorización por lo que "
+    @ApiOperation(value = "Testear seguridad", notes = "El servicio requiere autorización por lo que "
             + "a pesar de superar el control http fallará si no se indican credenciales.")
     List<Persona> metodoSeguroPorPreautorizacion() {
         return service.findByIdDocument("11111111A");
