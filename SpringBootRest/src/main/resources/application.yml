@@ -4,6 +4,11 @@ server:
   address: 127.0.0.1
   contextPath: ""
   
+endpoints:
+    shutdown:
+        #curl -k -u admin:adminadmin -X POST https://localhost:8000/shutdown
+        enabled : true
+    
 spring:
   datasource:
     driverClassName: org.apache.derby.jdbc.EmbeddedDriver
