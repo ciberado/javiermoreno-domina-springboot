@@ -39,7 +39,10 @@ public class CredentialsController {
         String username = principal instanceof UserDetails ? 
                 ((UserDetails) principal).getUsername() : 
                 principal.toString();
-        String ip = request.getRemoteAddr();
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null)  {
+            ip = request.getRemoteAddr();
+        }
         Token token = new Token(cryptoService, username, ip, ttl);
         
         return token;

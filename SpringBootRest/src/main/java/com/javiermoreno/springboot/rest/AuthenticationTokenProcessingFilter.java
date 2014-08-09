@@ -45,7 +45,11 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         String encryptedToken = request.getHeader("X-Auth-Token");
         if (SecurityContextHolder.getContext().getAuthentication() == null && encryptedToken != null) {
             Token token = new Token(cryptoService, encryptedToken);
-            if (request.getRemoteAddr().equals(token.getIp()) == true && token.isExpired() == false) {
+            String ip = request.getHeader("X-Forwarded-For");
+            if (ip == null)  {
+                ip = request.getRemoteAddr();
+            }
+            if (ip.equals(token.getIp()) == true && token.isExpired() == false) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(token.getUsername());
                 UsernamePasswordAuthenticationToken authentication
                         = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());

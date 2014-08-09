@@ -37,7 +37,7 @@ public class PrivateController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Testear seguridad", notes = "Permite comprobar el acceso al api privada.")
     String[] home() {
-        counterService.increment("ctrl.private.invoked");
+        counterService.increment("counter.ctrl.private.invoked");
         return new String[]{"Ok, puedes acceder a la parte privada."};
     }
 
