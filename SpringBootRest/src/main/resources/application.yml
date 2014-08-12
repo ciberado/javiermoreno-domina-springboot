@@ -3,6 +3,9 @@ server:
   port: 8000
   address: 127.0.0.1
   contextPath: ""
+  tomcat:
+      remote_ip_header: x-forwarded-for
+      protocol_header: x-forwarded-proto
   
 endpoints:
     shutdown:
