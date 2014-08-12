@@ -8,12 +8,14 @@ server:
       protocol_header: x-forwarded-proto
   
 endpoints:
+    sensitive: false
     shutdown:
         #curl -k -u admin:adminadmin -X POST https://localhost:8000/shutdown
         enabled : true
     
 spring:
   datasource:
+    #Agregará a /health automáticamente un objeto indicando su estado actual
     driverClassName: org.apache.derby.jdbc.EmbeddedDriver
     url: jdbc:derby:memory:demodb;create=true
     username: root
@@ -34,9 +36,8 @@ spring:
 
 
 application:    
-    #puerto https (0 para autoconfigurado)
-    httpsPort : 8001
-    
+    identification: "default"
+
     #Utilizado en RemoteApplicationProperties
     keystorePassURL: "http://wellknownmachine.com/keystorePass"
 

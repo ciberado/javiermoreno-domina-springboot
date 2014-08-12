@@ -11,6 +11,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +31,14 @@ public class PublicController {
     @Autowired
     private GestionPersonasService service;
 
+    @Value("${application.identification}")
+    private String appIdentification;
+    
     @RequestMapping(value="/test", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Testear conectividad", notes = "Permite comprobar el acceso al api publica.")
     String[] demo() {
-        return new String[]{"ooooooooook, puedes acceder a la parte pública."};
+        return new String[]{"ooooooooook, puedes acceder a la parte pública de " + appIdentification + "."};
     }
 
     @RequestMapping(value="/vip", method=RequestMethod.GET)

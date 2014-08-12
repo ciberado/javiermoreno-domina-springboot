@@ -44,8 +44,8 @@ public class App {
     @Autowired
     private RemoteApplicationProperties remoteProps; 
     
-    @Value("${application.httpsPort}")
-    private int httpsPort;
+    @Value("${server.port}")
+    private int serverPort;
     
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
@@ -92,7 +92,9 @@ public class App {
         // File truststore = new ClassPathResource("keystore").getFile();
         connector.setScheme("https");
         connector.setSecure(true);
-        connector.setPort(httpsPort);
+        if (serverPort != 0) {
+            connector.setPort(serverPort+1);
+        }
         protocol.setSSLEnabled(true);
         protocol.setKeystoreFile(keystoreFile.getAbsolutePath());
         protocol.setKeystorePass(remoteProps.getKeystorePass());
