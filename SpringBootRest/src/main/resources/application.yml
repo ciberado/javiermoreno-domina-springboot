@@ -31,6 +31,9 @@ spring:
 
 
 application:    
+    #puerto https (0 para autoconfigurado)
+    httpsPort : 8001
+    
     #Utilizado en RemoteApplicationProperties
     keystorePassURL: "http://wellknownmachine.com/keystorePass"
 

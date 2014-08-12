@@ -19,7 +19,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.ErrorPage;
-import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -45,6 +44,9 @@ public class App {
     @Autowired
     private RemoteApplicationProperties remoteProps; 
     
+    @Value("${application.httpsPort}")
+    private int httpsPort;
+    
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
@@ -54,12 +56,14 @@ public class App {
                 new ErrorPage(HttpStatus.UNAUTHORIZED, "/errores/error401.html"),
                 new ErrorPage(HttpStatus.FORBIDDEN, "/errores/error403.html"));
 
+
+        factory.addAdditionalTomcatConnectors(createSslConnector());
+        /* En el caso de que se desee sustituír http por https: ************************
         // keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
         final String keystoreFilePath = "keystore.p12";
         final String keystoreType = "PKCS12";
         final String keystoreProvider = "SunJSSE";
         final String keystoreAlias = "tomcat"; 
-
         factory.addConnectorCustomizers((TomcatConnectorCustomizer) (Connector con) -> {
             con.setScheme("https");
             con.setSecure(true);
@@ -73,10 +77,34 @@ public class App {
             proto.setProperty("keystoreProvider", keystoreProvider);
             proto.setKeyAlias(keystoreAlias);
         });
-
+        ***************************************************************************** */
         return factory;
     }
 
+    private Connector createSslConnector() {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
+        final String keystoreFilePath = "keystore.p12";
+        final String keystoreType = "PKCS12";
+        final String keystoreProvider = "SunJSSE";
+        final String keystoreAlias = "tomcat"; 
+        File keystoreFile = new File(keystoreFilePath);
+        // File truststore = new ClassPathResource("keystore").getFile();
+        connector.setScheme("https");
+        connector.setSecure(true);
+        connector.setPort(httpsPort);
+        protocol.setSSLEnabled(true);
+        protocol.setKeystoreFile(keystoreFile.getAbsolutePath());
+        protocol.setKeystorePass(remoteProps.getKeystorePass());
+        protocol.setKeystoreType(keystoreType);
+        protocol.setProperty("keystoreProvider", keystoreProvider);
+        protocol.setKeyAlias(keystoreAlias);
+        // protocol.setTruststoreFile(truststore.getAbsolutePath());
+        // protocol.setTruststorePass("changeit");
+        // protocol.setKeyAlias("apitester");
+        return connector;
+    }
+    
     public static void main(String[] args) {
         ConfigurableApplicationContext context
                 = new SpringApplicationBuilder()
