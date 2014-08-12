@@ -18,6 +18,7 @@ Características completadas:
 * Uso de @ConfigurationProperties para recuperar el password del certificado remotamente (simulado)
 * Mínima configuración mediante yaml
 * Métricas custom!
+* Shutdown por endpoint.
 
 
 Características pendientes:
