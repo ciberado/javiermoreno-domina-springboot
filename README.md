@@ -1,4 +1,4 @@
-﻿
+
 Primer acercamiento a spring boot. Beber con cuidado.
 
 Características completadas:
@@ -11,6 +11,7 @@ Características completadas:
 * Autentificación por token (comprueba ip y ttl)
 * Ejemplos de publicación de ficheros estáticos
 * Ejemplos de autorización global a nivel de método de servicio
+* Ejemplos de paso de parámetros al controlador (path, query, body)
 * CORS implementado con spring
 * Integración con jpa/hibernate
 * Swagger REST API docs FTW!
