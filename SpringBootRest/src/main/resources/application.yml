@@ -1,7 +1,7 @@
 #server.port=0 para que elija autom\u00e1ticamente un puerto libre
 server:
   port: 8000
-  address: 127.0.0.1
+  address: 0.0.0.0
   contextPath: ""
   tomcat:
       remote_ip_header: x-forwarded-for
