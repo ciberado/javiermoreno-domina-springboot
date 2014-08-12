@@ -19,7 +19,7 @@ public interface GestionPersonasService {
     Persona findById(int id);
 
     //@PreAuthorize("isAnonymous()")
-    void registrarNuevaPersona(Persona persona);
+    Persona registrarNuevaPersona(Persona persona);
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Persona> findByIdDocument(String a);

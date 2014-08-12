@@ -32,7 +32,7 @@ public class GestionPersonasServiceImpl implements GestionPersonasService {
 
     @Transactional
     @Override
-    public void registrarNuevaPersona(Persona persona) {
+    public Persona registrarNuevaPersona(Persona persona) {
         em.persist(persona);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -45,6 +45,7 @@ public class GestionPersonasServiceImpl implements GestionPersonasService {
             }
             System.out.format("Nueva persona registrada por {0}.", username);
         } 
+        return persona;
     }
 
     @Override

@@ -68,6 +68,24 @@ $(document).ready(function() {
         });
     };
 
+    var invocarAltaPersona = function() {
+        var persona = {docIdentificacion : '12345678A', nombre : 'Bob', apellidos : 'Sponja'};
+        $.ajax({
+            type: 'POST',
+            data : JSON.stringify(persona),
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            url: 'https://localhost:8000/public/personas',
+            headers: {
+                "X-Auth-Token": sessionStorage.getItem('X-Auth-Token')
+            }            
+        }).done(function(data) {
+            $('#respuesta').text('Alta Ok: ' + JSON.stringify(data));
+        }).fail(function(error) {
+            $('#respuesta').text('Alta Ko: ' + JSON.stringify(error));
+        });
+    };
+
     $('#cmdPublico').click(function(evt) {
         evt.preventDefault();
         invocarTestPublico(); 
@@ -87,6 +105,10 @@ $(document).ready(function() {
     $('#cmdPrivadoConToken').click(function(evt) {
         evt.preventDefault();
         invocarPrivadoConToken();
+    });
+    $('#cmdAltaPersona').click(function(evt) {
+        evt.preventDefault();
+        invocarAltaPersona();
     });
     
 });
