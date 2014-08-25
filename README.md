@@ -21,7 +21,7 @@ Primer acercamiento a spring boot. Beber con cuidado.
 * [x] Métricas custom!
 * [x] Shutdown por endpoint.
 * [x] Compresión Gzip activada sobre http (en https genera vectores de ataque).
-
+* [x] Banner personalizado
 
 ###Características pendientes:
 
