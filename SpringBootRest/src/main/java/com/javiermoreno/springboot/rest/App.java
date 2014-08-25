@@ -11,6 +11,7 @@ import com.mangofactory.swagger.plugin.EnableSwagger;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 import org.apache.catalina.connector.Connector;
+import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.ErrorPage;
+import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -27,6 +29,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 
 /**
@@ -41,12 +44,13 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 @EntityScan(basePackages = "com.javiermoreno.springboot.modelo")
 @EnableSwagger
 public class App {
+
     @Autowired
-    private RemoteApplicationProperties remoteProps; 
-    
+    private RemoteApplicationProperties remoteProps;
+
     @Value("${server.port}")
     private int serverPort;
-    
+
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
@@ -55,29 +59,38 @@ public class App {
         factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/errores/error404.html"),
                 new ErrorPage(HttpStatus.UNAUTHORIZED, "/errores/error401.html"),
                 new ErrorPage(HttpStatus.FORBIDDEN, "/errores/error403.html"));
-
+        // Activación gzip sobre http (*NO* activar sobre ssl, induce ataques.)
+        // http://stackoverflow.com/questions/21410317/using-gzip-compression-with-spring-boot-mvc-javaconfig-with-restful
+        factory.addConnectorCustomizers((TomcatConnectorCustomizer) (Connector connector) -> {
+            AbstractHttp11Protocol httpProtocol = (AbstractHttp11Protocol) connector.getProtocolHandler();
+            httpProtocol.setCompression("on");
+            httpProtocol.setCompressionMinSize(256);
+            String mimeTypes = httpProtocol.getCompressableMimeTypes();
+            String mimeTypesWithJson = mimeTypes + "," + MediaType.APPLICATION_JSON_VALUE;
+            httpProtocol.setCompressableMimeTypes(mimeTypesWithJson);
+        });
 
         factory.addAdditionalTomcatConnectors(createSslConnector());
         /* En el caso de que se desee sustituír http por https: ************************
-        // keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
-        final String keystoreFilePath = "keystore.p12";
-        final String keystoreType = "PKCS12";
-        final String keystoreProvider = "SunJSSE";
-        final String keystoreAlias = "tomcat"; 
-        factory.addConnectorCustomizers((TomcatConnectorCustomizer) (Connector con) -> {
-            con.setScheme("https");
-            con.setSecure(true);
-            Http11NioProtocol proto = (Http11NioProtocol) con.getProtocolHandler();
-            proto.setSSLEnabled(true);
-            // @todo: Descarga el fichero con el certificado actual 
-            File keystoreFile = new File(keystoreFilePath);
-            proto.setKeystoreFile(keystoreFile.getAbsolutePath());
-            proto.setKeystorePass(remoteProps.getKeystorePass());
-            proto.setKeystoreType(keystoreType);
-            proto.setProperty("keystoreProvider", keystoreProvider);
-            proto.setKeyAlias(keystoreAlias);
-        });
-        ***************************************************************************** */
+         // keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+         final String keystoreFilePath = "keystore.p12";
+         final String keystoreType = "PKCS12";
+         final String keystoreProvider = "SunJSSE";
+         final String keystoreAlias = "tomcat"; 
+         factory.addConnectorCustomizers((TomcatConnectorCustomizer) (Connector con) -> {
+         con.setScheme("https");
+         con.setSecure(true);
+         Http11NioProtocol proto = (Http11NioProtocol) con.getProtocolHandler();
+         proto.setSSLEnabled(true);
+         // @todo: Descarga el fichero con el certificado actual 
+         File keystoreFile = new File(keystoreFilePath);
+         proto.setKeystoreFile(keystoreFile.getAbsolutePath());
+         proto.setKeystorePass(remoteProps.getKeystorePass());
+         proto.setKeystoreType(keystoreType);
+         proto.setProperty("keystoreProvider", keystoreProvider);
+         proto.setKeyAlias(keystoreAlias);
+         });
+         ***************************************************************************** */
         return factory;
     }
 
@@ -87,13 +100,13 @@ public class App {
         final String keystoreFilePath = "keystore.p12";
         final String keystoreType = "PKCS12";
         final String keystoreProvider = "SunJSSE";
-        final String keystoreAlias = "tomcat"; 
+        final String keystoreAlias = "tomcat";
         File keystoreFile = new File(keystoreFilePath);
         // File truststore = new ClassPathResource("keystore").getFile();
         connector.setScheme("https");
         connector.setSecure(true);
         if (serverPort != 0) {
-            connector.setPort(serverPort+1);
+            connector.setPort(serverPort + 1);
         }
         protocol.setSSLEnabled(true);
         protocol.setKeystoreFile(keystoreFile.getAbsolutePath());
@@ -106,7 +119,7 @@ public class App {
         // protocol.setKeyAlias("apitester");
         return connector;
     }
-    
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context
                 = new SpringApplicationBuilder()

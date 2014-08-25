@@ -38,7 +38,12 @@ public class PublicController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Testear conectividad", notes = "Permite comprobar el acceso al api publica.")
     String[] demo() {
-        return new String[]{"ooooooooook, puedes acceder a la parte pública de " + appIdentification + "."};
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i < 512; i++) {
+            sb.append("*");
+        }
+        return new String[]{"ooooooooook, puedes acceder a la parte pública de " + appIdentification + ".", 
+                            sb.toString()};
     }
 
     @RequestMapping(value="/vip", method=RequestMethod.GET)
