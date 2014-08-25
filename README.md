@@ -20,6 +20,7 @@ Primer acercamiento a spring boot. Beber con cuidado.
 * [x] Mínima configuración mediante yaml
 * [x] Métricas custom!
 * [x] Shutdown por endpoint.
+* [x] Añadido soporte gzip.
 
 
 ###Características pendientes:
