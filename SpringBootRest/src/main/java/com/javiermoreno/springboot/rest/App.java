@@ -31,6 +31,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 /**
  *
@@ -122,6 +124,20 @@ public class App {
         return connector;
     }
 
+
+    @Bean
+    LocalValidatorFactoryBean localValidatorFactoryBean() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        return bean;
+    }
+    
+    @Bean MethodValidationPostProcessor methodValidationPostProcessor() {
+        MethodValidationPostProcessor bean = new MethodValidationPostProcessor();
+        bean.setValidator(localValidatorFactoryBean());
+        return bean;
+    }
+    
+    
     public static void main(String[] args) {
         ConfigurableApplicationContext context
                 = new SpringApplicationBuilder()

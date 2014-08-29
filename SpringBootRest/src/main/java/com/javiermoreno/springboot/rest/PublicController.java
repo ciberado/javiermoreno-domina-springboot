@@ -10,9 +10,12 @@ import com.javiermoreno.springboot.modelo.Persona;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import java.util.List;
+import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ciberado
  */
 @RestController
+@Validated
 @RequestMapping("/public")
 @Api(value = "Recursos públicos", description = "Demo de recursos accesibles públicamente sin autentificación.")
 public class PublicController {
@@ -33,6 +37,18 @@ public class PublicController {
 
     @Value("${application.identification}")
     private String appIdentification;
+
+    
+    @RequestMapping(value="/test/{numero}", method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Testear jsr303", notes = "El pathparam número debe de ser superior o igual a 5.")
+    int[] demoValidacion(@PathVariable @Min(5) int numero) {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i < 512; i++) {
+            sb.append("*");
+        }
+        return new int[]{numero * 10};
+    }
     
     @RequestMapping(value="/test", method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
