@@ -1,0 +1,20 @@
+logging:
+    level: 
+        org.hibernate : WARN
+        org.spring : WARN
+
+spring:
+  datasource:
+    #Agregará a /health automáticamente un objeto indicando su estado actual
+    driverClassName: org.apache.derby.jdbc.EmbeddedDriver
+    url: jdbc:derby:memory:demodb;create=true
+    username: root
+    password: bragasdeesparto
+
+
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: create
+            naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        show-sql: true        
