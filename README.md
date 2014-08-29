@@ -30,4 +30,4 @@ Primer acercamiento a spring boot. Beber con cuidado.
 * [ ] Descargar el certificado actual desde una localización remota
 * [ ] Mejorar los @autowired para facilitar test
 * [ ] Escribir los test!!!! (prioritario)
-* [ ] Utilizar los profiles para diferenciar desarrollo y producción [http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-change-configuration-depending-on-the-environment|profiles]
+* [ ] Utilizar los profiles para diferenciar desarrollo y producción (http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-change-configuration-depending-on-the-environment)
