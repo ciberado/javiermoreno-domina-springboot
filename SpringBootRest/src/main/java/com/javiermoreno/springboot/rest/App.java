@@ -41,6 +41,8 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 @EnableConfigurationProperties
 @EnableWebMvcSecurity
 @ComponentScan(value = {"com.javiermoreno.springboot.rest", "com.javiermoreno.springboot.modelo"})
+//@EnableJpaRepositories(...) (no necesaria por autoconfiguración)
+//@EnableTransactionManagement (no necesario por autoconfiguración)
 @EntityScan(basePackages = "com.javiermoreno.springboot.modelo")
 @EnableSwagger
 public class App {
