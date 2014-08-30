@@ -7,6 +7,7 @@
 package com.javiermoreno.springboot.mvc.users;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -53,12 +54,16 @@ public class DailyUser implements UserDetails, Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
+
     @Column(columnDefinition = "varchar(128)", length = 128, nullable = true, unique = true)
     private String email;
+    
     @Column(columnDefinition = "char(32)", length = 32, nullable = false, unique = false)
     private String passwordHash;
+    
     @Temporal(TemporalType.DATE)
     private Date birthday;
+    
     @ElementCollection
     @CollectionTable(name = "user_roles", joinColumns = {@JoinColumn(name="user_id")})
     private List<RoleType> roles = new ArrayList<>();
@@ -85,6 +90,7 @@ public class DailyUser implements UserDetails, Serializable{
     }    
     
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<String> roleNames = new ArrayList<>();
         for (RoleType current : roles) roleNames.add(current.name());
@@ -92,6 +98,7 @@ public class DailyUser implements UserDetails, Serializable{
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return passwordHash;
     }

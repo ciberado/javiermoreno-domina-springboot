@@ -5,7 +5,12 @@
  */
 package com.javiermoreno.springboot.mvc.users;
 
+import java.util.List;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -24,6 +29,18 @@ public interface UserManagementService extends UserDetailsService {
      * @throws org.springframework.dao.DataIntegrityViolationException if
      *         that email address is already registered.
      */
-    void registerNewUser(DailyUser user,  @Size(min = 5) String plainTextPassword, boolean confirmationPending);
+    void registerNewUser(
+            @NotNull DailyUser user,  @Size(min = 5) String plainTextPassword, boolean confirmationPending);
+    
+    /**
+     * 
+     * @param offset first element to return
+     * @param amount  number of elements
+     * @param direction ASC, DESC or null if sort is not needed
+     * @param propertyName to sort, if needed.
+     * @return  A Pair with the results and the total number of available elements in the dataset.
+     */
+    Pair<List<DailyUser>, Long /* total */> retrieveAllUsers(
+            @Min(0) int offset, int amount, Sort.Direction direction,  String propertyName);
     
 }

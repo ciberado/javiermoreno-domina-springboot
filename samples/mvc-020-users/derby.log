@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Fri Aug 29 18:14:26 CEST 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0148-228b-e5ac-000003e459f8 
-on database directory memory:C:\Users\ciberado\Documents\GitHub\javiermoreno-domina-springboot\samples\mvc-020-users\testdb with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
+Sun Aug 31 01:15:42 CEST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0148-2933-ef90-000002089248 
+on database directory memory:C:\Users\ciberado\Documents\GitHub\javiermoreno-domina-springboot\samples\mvc-020-users\testdb with class loader sun.misc.Launcher$AppClassLoader@58644d46 
 Loaded from file:/C:/Users/ciberado/.m2/repository/org/apache/derby/derby/10.10.2.0/derby-10.10.2.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_11-b12

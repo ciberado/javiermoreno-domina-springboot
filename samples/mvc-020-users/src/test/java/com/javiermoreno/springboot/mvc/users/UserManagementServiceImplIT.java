@@ -5,11 +5,11 @@
  */
 package com.javiermoreno.springboot.mvc.users;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.validation.ValidationException;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +48,11 @@ public class UserManagementServiceImplIT {
     public void checkDuplicatedEmailNotAllowed() {
         service.registerNewUser(new DailyUser("bob@esponja.com", new Date()), "12345", true);
         service.registerNewUser(new DailyUser("bob@esponja.com", new Date()), "12345", true);
+    }
+    
+    @Test(expected = ValidationException.class)
+    public void checkPasswordTooShortWhenCreatingNewUser() {
+        service.registerNewUser(new DailyUser(), "", false);
     }
     
 }

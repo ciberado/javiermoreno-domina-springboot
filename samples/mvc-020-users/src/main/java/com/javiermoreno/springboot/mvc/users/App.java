@@ -53,10 +53,9 @@ public class App {
 
         UserManagementService userService = context.getBean(UserManagementService.class);
 
-        DailyUser user = new DailyUser();
-        user.setEmail("alice@wonderland.com");
-        user.setBirthday(new Date());
-
-        userService.registerNewUser(user, "secret-alice", true);
+        for (int i=0; i <105; i++) {
+            DailyUser user = new DailyUser(i + "_alice@wonderland.com", new Date());
+            userService.registerNewUser(user, "secret-" + i, true);
+        }
     }
 }
