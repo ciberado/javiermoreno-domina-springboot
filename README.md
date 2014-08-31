@@ -15,7 +15,9 @@ Primer acercamiento a spring boot. Beber con cuidado.
 * [x] Ejemplos de paso de parámetros al controlador (path, query, body)
 * [x] CORS implementado con spring
 * [x] Integración con jpa/hibernate
+* [x] Repositorios JPA con paginación automática
 * [x] Swagger REST API docs FTW!
+* [x] Hateoas con links de paginación generados automáticamente
 * [x] Uso de @ConfigurationProperties para recuperar el password del certificado remotamente (simulado)
 * [x] Mínima configuración mediante yaml
 * [x] Métricas custom!
@@ -23,12 +25,13 @@ Primer acercamiento a spring boot. Beber con cuidado.
 * [x] Compresión Gzip activada sobre http (en https genera vectores de ataque).
 * [x] Banner personalizado
 * [x] Validación por jsr303 ¡incluso a nivel de parámetros de método!
-
+* [x] Primeros ejemplos de tests de integración
+ 
 ###Características pendientes:
 
 
 * [ ] Conectar con un servicio de configuración centralizado para inicializar la criptografía de token
 * [ ] Descargar el certificado actual desde una localización remota
 * [ ] Mejorar los @autowired para facilitar test
-* [ ] Escribir los test!!!! (prioritario)
+* [ ] Escribir ---los--- más test!!!! (prioritario)
 * [ ] Utilizar los profiles para diferenciar desarrollo y producción (http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-change-configuration-depending-on-the-environment)
