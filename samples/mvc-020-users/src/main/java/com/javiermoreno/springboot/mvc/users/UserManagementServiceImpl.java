@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     
     @Override
     @Transactional
+    @Modifying
     public void registerNewUser(@NotNull DailyUser user,  @Size(min = 5) String plainTextPassword, boolean confirmationPending) {
         if (confirmationPending == true) {
             user.getRoles().add(DailyUser.RoleType.CONFIRMATION_PENDING);
@@ -59,11 +61,10 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Override
     @Transactional
     public Pair<List<DailyUser>, Long> retrieveAllUsers(
-            @Min(0) int offset, int amount, Sort.Direction direction, String propertyName) {
-        int pageNumber = offset / amount;
+            @Min(0) int pageNumber, int amount, Sort.Direction direction, String sortingProperty) {
         PageRequest pr;
-        if (direction != null && propertyName != null) {
-            pr = new PageRequest(pageNumber, amount, direction, propertyName);           
+        if (direction != null && sortingProperty != null) {
+            pr = new PageRequest(pageNumber, amount, direction, sortingProperty);           
         } else {
             pr = new PageRequest(pageNumber, amount);
         }

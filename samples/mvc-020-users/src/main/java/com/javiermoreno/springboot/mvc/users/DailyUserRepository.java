@@ -20,5 +20,7 @@ public interface DailyUserRepository extends PagingAndSortingRepository<DailyUse
     
     DailyUser findByEmail(String email);
     
+    Integer deleteByEmail(String email);
+    
     
 }

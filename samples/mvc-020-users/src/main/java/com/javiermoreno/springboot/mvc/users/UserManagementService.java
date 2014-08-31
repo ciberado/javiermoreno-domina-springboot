@@ -34,13 +34,13 @@ public interface UserManagementService extends UserDetailsService {
     
     /**
      * 
-     * @param offset first element to return
+     * @param pageNumber offset = pageNumber * amount
      * @param amount  number of elements
      * @param direction ASC, DESC or null if sort is not needed
-     * @param propertyName to sort, if needed.
+     * @param sortingProperty to sort, if needed.
      * @return  A Pair with the results and the total number of available elements in the dataset.
      */
     Pair<List<DailyUser>, Long /* total */> retrieveAllUsers(
-            @Min(0) int offset, int amount, Sort.Direction direction,  String propertyName);
+            @Min(0) int pageNumber, int amount, Sort.Direction direction,  String sortingProperty);
     
 }

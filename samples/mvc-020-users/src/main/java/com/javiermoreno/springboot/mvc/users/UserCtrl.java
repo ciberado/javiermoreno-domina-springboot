@@ -18,10 +18,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import static java.lang.Math.*;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
@@ -42,42 +47,135 @@ public class UserCtrl {
         this.userService = userService;
         this.userRepository = userRepository;
     }
+
+    /**
+     * Retrieves an user given his/her username or id.
+     * @param emailOrId email or id (diferenciated by looking for an @).
+     * @return 200 if ok, 404 if not found.
+     */
+    @RequestMapping(value="/{emailOrId}", method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "GET /users/{emailOrId}", notes = "404 if user not found")    
+    public HttpEntity<DailyUserResource> showUser(@PathVariable String emailOrId) {
+        DailyUser user;
+        if (emailOrId.contains("@") == true) {
+            user = userRepository.findByEmail(emailOrId);
+        } else {
+            int id = Integer.parseInt(emailOrId);
+            user = userRepository.findOne(id);
+        }
+        if (user != null) {
+            DailyUserResource resource = new DailyUserResource();
+            resource.user = user;
+            resource.add(linkTo(methodOn(UserCtrl.class).showUser(emailOrId)).withSelfRel());
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }    
     
+    private class DailyUserResource extends ResourceSupport {
+        public DailyUser user;
+    }
+    
+    /**
+     * Creates a new user with the provided password
+     * @param dto An object with a DailyUser and a Password
+     * @return 201 Created if ok, 409 Conflict if already exists that username.
+     */
+    @RequestMapping(method=RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "POST /users", notes = "Returns the created user with its assigned id. 201 if ok, 409 if already exists.")    
+    public HttpEntity<DailyUserResource> createNewUser(@RequestBody UserAndPasswordDTO dto) {
+        DailyUserResource resource = new DailyUserResource();
+        resource.user = dto.user;
+        resource.add(linkTo(methodOn(UserCtrl.class).showUser(dto.user.getEmail())).withSelfRel());
+        try {           
+            userService.registerNewUser(dto.user, dto.password, true);
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        } catch (DataIntegrityViolationException exc) {
+            return new ResponseEntity<>(resource, HttpStatus.CONFLICT);
+        }
+    }    
+    
+    private class UserAndPasswordDTO {
+        public DailyUser user;
+        public String password;
+    }
+        
+    /**
+     * Retrieves the users registered in the application.
+     * @param page page of the results
+     * @param amount how many results
+     * @param direction ASC or DESC
+     * @param sortingProperty name of the property used for sorting
+     * @return 
+     */
     @RequestMapping(method=RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "GET users", notes = "Paginable.")    
-    public HttpEntity<UsersPageResource> showAll(
-            @RequestParam(defaultValue = "0") int offset, 
-            @RequestParam(defaultValue = "100") int amount,
+    @ApiOperation(value = "GET /users", notes = "Paginable.")    
+    public HttpEntity<DailyUserPageResource> showAll(
+            @RequestParam(defaultValue = "0") int page, 
+            @RequestParam(defaultValue = "25") int amount,
             @RequestParam(required = false) Sort.Direction direction, 
-            @RequestParam(required = false) String propertyName) {
+            @RequestParam(required = false) String sortingProperty) {
         
-        Pair<List<DailyUser>, Long> data = userService.retrieveAllUsers(offset, amount, direction, propertyName);
+        Pair<List<DailyUser>, Long> data = userService.retrieveAllUsers(page, amount, direction, sortingProperty);
         
-        UsersPageResource resource = new UsersPageResource();
+        DailyUserPageResource resource = new DailyUserPageResource();
         resource.users = data.getLeft();
-        resource.offset = offset;
+        resource.page = page;
         resource.amount = amount;
         resource.total = data.getRight();
-        resource.add(linkTo(methodOn(UserCtrl.class).showAll(offset, amount, direction, propertyName)).withSelfRel());
-        if (offset > 0) {
-            int prev = Math.max(offset-amount, 0);
-            resource.add(linkTo(methodOn(UserCtrl.class).showAll(prev, amount, direction, propertyName)).withRel("prevPage"));
-        }
-        if (offset + amount < resource.total) {
-            resource.add(linkTo(methodOn(UserCtrl.class).showAll(offset+amount, amount, direction, propertyName)).withRel("nextPage"));
-        }
+        resource.lastPageNumber = (int) (resource.total / resource.amount);
         
+        resource.add(linkTo(methodOn(UserCtrl.class).showAll(page, amount, direction, sortingProperty)).withSelfRel());
+        resource.add(linkTo(methodOn(UserCtrl.class).showAll(0, amount, direction, sortingProperty)).withRel("firstPage"));
+        resource.add(linkTo(methodOn(UserCtrl.class).showAll(resource.lastPageNumber, amount, direction, sortingProperty)).withRel("lastPage"));
+        if (page > 0) {
+            resource.add(linkTo(methodOn(UserCtrl.class).showAll(page-1, amount, direction, sortingProperty)).withRel("prevPage"));
+        }
+        if (page + amount < resource.total) {
+            resource.add(linkTo(methodOn(UserCtrl.class).showAll(page+1, amount, direction, sortingProperty)).withRel("nextPage"));
+        }
+        for (int i=max(0, page-5); i < min(page+5, resource.lastPageNumber); i++) {
+            resource.add(linkTo(methodOn(UserCtrl.class).showAll(i, amount, direction, sortingProperty)).withRel("page" + i));
+        }
+                
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
     
-    public class UsersPageResource extends ResourceSupport {
+    
+    private class DailyUserPageResource extends ResourceSupport {
         public List<DailyUser> users;
-        
-        public int offset;
+        public int page;
         public int amount;
+        public int lastPageNumber;
         public long total;
     }
+    
+    /**
+     * Deletes an user.
+     * @param emailOrId identified by looking for an "@". 
+     */
+    @RequestMapping(value="/{emailOrId}", method=RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "DELETE /users/{emailOrId}", notes = "204 no content if ok, 404 if not found.")    
+    ResponseEntity deleteUser(@PathVariable String emailOrId) {
+        try {
+            DailyUser user;
+            if (emailOrId.contains("@") == true) {
+                int affected = userRepository.deleteByEmail(emailOrId);
+            } else {
+                int id = Integer.parseInt(emailOrId);
+                userRepository.delete(id);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (EmptyResultDataAccessException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }    
+    
 }
     
 
