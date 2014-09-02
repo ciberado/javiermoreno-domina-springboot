@@ -62,6 +62,14 @@ public class PublicController {
                             sb.toString()};
     }
 
+    @RequestMapping(value="/testerror", method=RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "/testerror", notes = "Visualiza el efecto de RestExceptionHandler.")
+    String[] demoError() {
+        throw new RuntimeException("wowowowowoooooooooooooo.");
+    }
+    
+    
     @RequestMapping(value="/vip", method=RequestMethod.GET)
     @ApiOperation(value = "Testear seguridad", notes = "El servicio requiere autorización por lo que "
             + "a pesar de superar el control http fallará si no se indican credenciales.")
