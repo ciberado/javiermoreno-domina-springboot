@@ -1,6 +1,6 @@
 #Demo Spring Boot
 
-Primer acercamiento a spring boot. Beber con cuidado.
+Beber con cuidado.
 
 ###Características completadas:
 
