@@ -10,7 +10,7 @@ Beber con cuidado.
 * [x] Sessionless rest webservices
 * [x] Autentificación usuario/password
 * [x] Autentificación por token (comprueba ip y ttl)
-* [x] Ejemplos de publicación de ficheros estáticos
+* [x] Ejemplos de publicación de ficheros estáticos codificados con utf-8
 * [x] Ejemplos de autorización global a nivel de método de servicio
 * [x] Ejemplos de paso de parámetros al controlador (path, query, body...)
 * [x] Web service Rest completo, incluyendo gestión de status http y CRUD completo
