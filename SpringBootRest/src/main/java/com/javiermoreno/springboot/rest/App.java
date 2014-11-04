@@ -33,6 +33,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 /**
  *
@@ -54,6 +56,21 @@ public class App {
 
     @Value("${server.port}")
     private int serverPort;
+
+
+    /** Fix de default codification of the static content to UTF-8 */
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        registrationBean.setFilter(characterEncodingFilter);
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        registrationBean.setOrder(Integer.MIN_VALUE);
+        registrationBean.addUrlPatterns("/*");
+        return registrationBean;
+    }    
+
 
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
