@@ -35,5 +35,6 @@ Beber con cuidado.
 * [ ] Conectar con un servicio de configuración centralizado para inicializar la criptografía de token
 * [ ] Descargar el certificado actual desde una localización remota
 * [ ] Mejorar los @autowired para facilitar test
+* [ ] Mejorar el soporte HATEOAS enriqueciendo los resources con ResourceProcessor
 * [ ] Escribir ---los--- más test!!!! (prioritario)
 * [ ] Utilizar los profiles para diferenciar desarrollo y producción (http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-change-configuration-depending-on-the-environment)
